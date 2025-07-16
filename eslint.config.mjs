@@ -43,6 +43,7 @@ export default defineConfig([globalIgnores([
     "!**/react-shim.js",
     "!**/tsup.config.ts",
 ]), {
+
     extends: fixupConfigRules(compat.extends(
         "plugin:react/recommended",
         "plugin:prettier/recommended",
@@ -86,6 +87,8 @@ export default defineConfig([globalIgnores([
     files: ["**/*.ts", "**/*.tsx"],
 
     rules: {
+      'react/no-unescaped-entities': 'off',
+      '@next/next/no-page-custom-font': 'off',
         "no-console": "warn",
         "react/prop-types": "off",
         "react/jsx-uses-react": "off",

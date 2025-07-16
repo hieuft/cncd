@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 import { checkSuperKey, salt } from "@/config/key";
 import { handlePoint } from "@/utils/pointing";
 
-export async function GET(req, { params }) {
+export async function GET(req: any, { params }: { params: any }) {
   try {
     await dbConnect();
 

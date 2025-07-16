@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import ServicePackage from "@/models/ServicePackage";
 import { NextResponse } from "next/server";
 
-export async function GET(req, { params }) {
+export async function GET(req: any, { params }: { params: any }) {
   try {
     await dbConnect();
 

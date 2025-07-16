@@ -4,7 +4,7 @@ import { hashSync } from "bcrypt-ts";
 import { NextResponse } from "next/server";
 import { salt } from "@/config/key";
 
-export async function GET(req, { params }) {
+export async function GET(req: any, { params }: { params: any }) {
   try {
     await dbConnect();
 
