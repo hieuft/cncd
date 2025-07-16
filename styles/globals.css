@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  --font-mono: "Geist Mono";
+}
+
+.fillbox {
+  border-bottom: 3px solid #000;
+  min-width: 75px;
+  field-sizing: content;
+  text-align: center;
+  margin: 6px 0;
+}
+
+.fillbox:focus {
+  outline: none;
+  border-color: cornflowerblue;
+}
+
+.dropbox {
+  vertical-align: middle;
+  min-width: 100px;
+  field-sizing: content;
+  border: 3px dotted #000;
+  display: inline-block;
+  min-height: 35px;
+  border-radius: 6px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.dropbox:hover {
+  border-color: cornflowerblue;
+}
+
+#drawer {
+  display: none;
+  background: rgba(0, 0, 0, 0.4);
+  animation: drawerDisapper 0.3s;
+}
+
+#drawer.is-open {
+  display: grid;
+  animation: drawerAppear 0.3s;
+}
+
+#drawer.is-open #drawer-content {
+  animation: slideRightToLeft 0.3s;
+}
+
+#drawer #drawer-content {
+  animation: slideLeftToRight 0.3s;
+}
+
+@keyframes drawerAppear {
+  from {
+    display: none;
+    opacity: 0;
+  }
+
+  to {
+    display: grid;
+    opacity: 1;
+  }
+}
+
+@keyframes drawerDisapper {
+  from {
+    display: grid;
+    opacity: 1;
+  }
+
+  to {
+    display: none;
+    opacity: 0;
+  }
+}
+
+@keyframes slideRightToLeft {
+  from {
+    left: 100%;
+  }
+
+  to {
+    left: 0%;
+  }
+}
+
+@keyframes slideLeftToRight {
+  from {
+    left: 0%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+#upload-form input,
+textarea {
+  field-sizing: content;
+  min-width: 300px;
+}
