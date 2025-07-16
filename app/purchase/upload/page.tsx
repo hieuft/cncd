@@ -121,7 +121,7 @@ export default function UploadPage() {
   const handleGet = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/service-package/get/" + id + "/" + password,
+        "https://cncd.vercel.app/api/service-package/get/" + id + "/" + password,
       );
 
       const pack = response.data.servicePackageData;

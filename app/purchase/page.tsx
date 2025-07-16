@@ -22,7 +22,7 @@ const PurchasePage = () => {
   async function getData() {
     await sleep(10000);
     const response = await axios.get(
-      "http://localhost:3000/api/service-package/get",
+      "https://cncd.vercel.app/api/service-package/get",
     );
     setPackages(response.data.servicePackageData);
     setLoading(false);

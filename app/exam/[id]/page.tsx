@@ -19,7 +19,7 @@ export default async function ExamIdPage({
   if (!math) {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/problem-set/get/" + id + "/" + email + "/",
+        "https://cncd.vercel.app/api/problem-set/get/" + id + "/" + email + "/",
       );
 
       rawData = response.data.rawData;
