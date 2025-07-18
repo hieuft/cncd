@@ -1,5 +1,6 @@
 "use client";
 
+import { getCurrentHost } from "@/utils/currentHost";
 import { hashing } from "@/utils/hashing";
 import {
   addToast,
@@ -120,8 +121,10 @@ export default function UploadPage() {
 
   const handleGet = async () => {
     try {
+      const host = getCurrentHost();
+
       const response = await axios.get(
-        "https://cncd.vercel.app/api/service-package/get/" + id + "/" + password,
+        host + "/api/service-package/get/" + id + "/" + password,
       );
 
       const pack = response.data.servicePackageData;

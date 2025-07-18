@@ -14,5 +14,9 @@ export default function Math() {
     setData(data.reading);
   }, []);
 
-  return data ? <ScientificView rawProblemSet={data} /> : <>Not found</>;
+  return data ? (
+    <ScientificView rawProblemSet={data} timeLimit={1800} />
+  ) : (
+    <>Not found</>
+  );
 }

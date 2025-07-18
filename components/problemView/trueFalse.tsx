@@ -67,43 +67,53 @@ export default function TrueFalse({
       }
     }
 
-    if (!showAnswer) {
-      initUserAnswer();
-      for (let i = 0; ; ++i) {
-        const optTrue = document.getElementById(
-          "opt-true" + problemIndex.toString() + i.toString(),
-        );
+    if (typeof window != undefined) {
+      if (!showAnswer) {
+        initUserAnswer();
+        for (let i = 0; ; ++i) {
+          const optTrue = document.getElementById(
+            "opt-true" + problemIndex.toString() + i.toString(),
+          );
 
-        if (!optTrue) break;
+          if (!optTrue) break;
 
-        optTrue.addEventListener("change", () => {
-          updateUserAnswer(i, optTrue.checked ? "1" : "0");
-          updateNumberProblemStatus(changeStatusNode());
-        });
+          optTrue.addEventListener("change", () => {
+            updateUserAnswer(i, optTrue.checked ? "1" : "0");
+            updateNumberProblemStatus(changeStatusNode());
+          });
 
-        const optFalse = document.getElementById(
-          "opt-false" + problemIndex.toString() + i.toString(),
-        );
+          const optFalse = document.getElementById(
+            "opt-false" + problemIndex.toString() + i.toString(),
+          );
 
-        if (!optFalse) break;
+          if (!optFalse) break;
 
-        optFalse.addEventListener("change", () => {
-          updateUserAnswer(i, optFalse.checked ? "0" : "1");
-          updateNumberProblemStatus(changeStatusNode());
-        });
-      }
-    } else {
-      if (answer && usrAnswer) {
-        const statusNode = document.getElementById(
-          "status-node" + problemIndex.toString(),
-        );
-        if (statusNode) {
-          if (answer == usrAnswer) {
-            statusNode.classList.remove("bg-gray-200", "text-black");
-            statusNode.classList.add("bg-green-500", "text-white");
-          } else {
-            statusNode.classList.remove("bg-gray-200", "text-black");
-            statusNode.classList.add("bg-red-500", "text-black");
+          optFalse.addEventListener("change", () => {
+            updateUserAnswer(i, optFalse.checked ? "0" : "1");
+            updateNumberProblemStatus(changeStatusNode());
+          });
+        }
+      } else {
+        if (answer && usrAnswer) {
+          const statusNode = document.getElementById(
+            "status-node" + problemIndex.toString(),
+          );
+          if (statusNode) {
+            if (answer == usrAnswer) {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-red-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-green-500", "text-white");
+            } else {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-green-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-red-500", "text-black");
+            }
           }
         }
       }

@@ -195,59 +195,69 @@ export default function DragDrop({
       return false;
     }
 
-    if (!showAnswer) {
-      initUserAnswer();
-      for (let i = 0; ; ++i) {
-        if (!listenDragOptEvent(i)) break;
-      }
-
-      for (let i = 0; ; ++i) {
-        if (!listenDropToBoxEvent(i)) break;
-      }
-    } else {
-      if (answer && usrAnswer) {
-        const x = answer.split("|");
-        for (let i = 0; i < x.length; ++i) {
-          const opt = document.getElementById(
-            "opt-ans" + problemIndex.toString() + x[i],
-          );
-          const box = document.getElementById(
-            "dropbox-ans" + problemIndex.toString() + i.toString(),
-          );
-          if (opt && box) {
-            // opt.classList.add("!bg-green-50");
-            box.appendChild(opt);
-          }
+    if (typeof window != undefined) {
+      if (!showAnswer) {
+        initUserAnswer();
+        for (let i = 0; ; ++i) {
+          if (!listenDragOptEvent(i)) break;
         }
 
-        const y = usrAnswer.split("|");
-        for (let i = 0; i < y.length; ++i) {
-          const opt = document.getElementById(
-            "opt-usr" + problemIndex.toString() + y[i],
-          );
-          const box = document.getElementById(
-            "dropbox-usr" + problemIndex.toString() + i.toString(),
-          );
-          if (opt && box) {
-            if (x[i] == y[i]) {
-              opt.classList.add("!bg-green-50");
-            } else {
-              opt.classList.add("!bg-red-50");
+        for (let i = 0; ; ++i) {
+          if (!listenDropToBoxEvent(i)) break;
+        }
+      } else {
+        if (answer && usrAnswer) {
+          const x = answer.split("|");
+          for (let i = 0; i < x.length; ++i) {
+            const opt = document.getElementById(
+              "opt-ans" + problemIndex.toString() + x[i],
+            );
+            const box = document.getElementById(
+              "dropbox-ans" + problemIndex.toString() + i.toString(),
+            );
+            if (opt && box) {
+              // opt.classList.add("!bg-green-50");
+              box.appendChild(opt);
             }
-            box.appendChild(opt);
           }
-        }
 
-        const statusNode = document.getElementById(
-          "status-node" + problemIndex.toString(),
-        );
-        if (statusNode) {
-          if (answer == usrAnswer) {
-            statusNode.classList.remove("bg-gray-200", "text-black");
-            statusNode.classList.add("bg-green-500", "text-white");
-          } else {
-            statusNode.classList.remove("bg-gray-200", "text-black");
-            statusNode.classList.add("bg-red-500", "text-black");
+          const y = usrAnswer.split("|");
+          for (let i = 0; i < y.length; ++i) {
+            const opt = document.getElementById(
+              "opt-usr" + problemIndex.toString() + y[i],
+            );
+            const box = document.getElementById(
+              "dropbox-usr" + problemIndex.toString() + i.toString(),
+            );
+            if (opt && box) {
+              if (x[i] == y[i]) {
+                opt.classList.add("!bg-green-50");
+              } else {
+                opt.classList.add("!bg-red-50");
+              }
+              box.appendChild(opt);
+            }
+          }
+
+          const statusNode = document.getElementById(
+            "status-node" + problemIndex.toString(),
+          );
+          if (statusNode) {
+            if (answer == usrAnswer) {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-red-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-green-500", "text-white");
+            } else {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-green-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-red-500", "text-black");
+            }
           }
         }
       }

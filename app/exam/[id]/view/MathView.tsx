@@ -9,11 +9,14 @@ import { useEffect, useState } from "react";
 import ProblemView from "@/components/problemView/problemView";
 
 import { arrayToArrayWithKey } from "@/utils/convert";
+import { secondToMinuteAndSecond } from "@/utils/timeFormat";
 
 export default function MathView({
   rawProblemSet,
+  timeLimit,
 }: {
   rawProblemSet: Array<Object>;
+  timeLimit: number;
 }) {
   const numberOfProblems = rawProblemSet.length;
 
@@ -68,6 +71,16 @@ export default function MathView({
         ?.classList.remove("hidden");
 
       problemList?.setAttribute("data-index", i.toString());
+
+      // display new time count up
+      const timeBox = document.getElementById("current-time-box");
+      const currentProblem = document.getElementById("problem" + i.toString());
+      if (timeBox && currentProblem) {
+        const currentProblemTime = Number(
+          currentProblem.getAttribute("data-time"),
+        );
+        timeBox.innerHTML = secondToMinuteAndSecond(currentProblemTime);
+      }
     }
 
     function listenStatusNodeClickEvent() {
@@ -113,6 +126,27 @@ export default function MathView({
       }
     }
 
+    function handleSubmit() {
+      document.getElementById("loading-overlay")?.classList.remove("hidden");
+
+      let userAnswers = [];
+      for (let i = 0; ; ++i) {
+        const userAnswer = document.getElementById(
+          "user-answer" + i.toString(),
+        );
+        if (!userAnswer) break;
+        userAnswers.push(userAnswer.innerText.toLowerCase().replace(/\s/g, ""));
+      }
+
+      const id = sessionStorage.getItem("currentId") || "";
+
+      sessionStorage.setItem("userMathAnswer", userAnswers.join("[divider]"));
+
+      setTimeout(function () {
+        window.location.href = "/exam/" + id + "?math=done";
+      }, 4000);
+    }
+
     function listenSubmitButton() {
       const submit = document.getElementById("submit");
       if (submit) {
@@ -120,34 +154,49 @@ export default function MathView({
           e.preventDefault();
           if (confirm("Bạn có muốn nộp bài không?")) {
             submit.disabled = true;
-            document
-              .getElementById("loading-overlay")
-              ?.classList.remove("hidden");
-
-            let userAnswers = [];
-            for (let i = 0; ; ++i) {
-              const userAnswer = document.getElementById(
-                "user-answer" + i.toString(),
-              );
-              if (!userAnswer) break;
-              userAnswers.push(
-                userAnswer.innerText.toLowerCase().replace(/\s/g, ""),
-              );
-            }
-
-            const id = sessionStorage.getItem("currentId") || "";
-
-            sessionStorage.setItem(
-              "userMathAnswer",
-              userAnswers.join("[divider]"),
-            );
-
-            setTimeout(function () {
-              window.location.href = "/exam/" + id + "?math=done";
-            }, 4000);
+            handleSubmit();
           }
         });
       }
+    }
+
+    function timeRunner() {
+      const clock = setInterval(() => {
+        const problemList = document.getElementById("problem-list");
+        const currentTimeBox = document.getElementById("current-time-box");
+        const timeBox = document.getElementById("time-box");
+        if (problemList && currentTimeBox && timeBox) {
+          const currentIndex = Number(problemList.getAttribute("data-index"));
+          const currentProblem = document.getElementById(
+            "problem" + currentIndex.toString(),
+          );
+
+          if (currentProblem) {
+            const currentProblemTime = Number(
+              currentProblem.getAttribute("data-time"),
+            );
+            currentTimeBox.innerText = secondToMinuteAndSecond(
+              currentProblemTime + 1,
+            );
+            currentProblem.setAttribute(
+              "data-time",
+              (currentProblemTime + 1).toString(),
+            );
+          }
+
+          const currentTime = Number(timeBox.getAttribute("data-time"));
+          timeBox.innerText = secondToMinuteAndSecond(currentTime - 1);
+          timeBox.setAttribute("data-time", (currentTime - 1).toString());
+
+          if (currentTime - 1 == 0) {
+            const submit = document.getElementById("submit");
+            if (submit) {
+              handleSubmit();
+              clearInterval(clock);
+            }
+          }
+        }
+      }, 1000);
     }
 
     if (typeof window !== "undefined" && rawProblemSet.length) {
@@ -156,6 +205,7 @@ export default function MathView({
       listenNumberSolvedChange();
       prevAndNextProblemButton();
       listenSubmitButton();
+      timeRunner();
     }
   }, [rawProblemSet]);
 
@@ -181,6 +231,7 @@ export default function MathView({
               key={item.key}
               id={"problem" + item.key.toString()}
               className="hidden"
+              data-time={0}
             >
               <ProblemView
                 type={item.type}
@@ -201,7 +252,13 @@ export default function MathView({
             <div className="flex items-center gap-4 my-4">Tư duy Toán học</div>
             <div className="flex items-center gap-3 my-4">
               <span className="mr-auto text-medium">Thời gian còn lại</span>
-              <span className="text-3xl font-bold">58:44</span>
+              <span
+                id="time-box"
+                className="text-3xl font-bold"
+                data-time={timeLimit}
+              >
+                {secondToMinuteAndSecond(timeLimit)}
+              </span>
               <Button
                 id="submit"
                 className="text-medium"
@@ -292,7 +349,9 @@ export default function MathView({
         </Button>
         <div className="flex gap-4 items-center justify-center">
           <span>Thời gian làm câu hiện tại:</span>
-          <span className="text-3xl font-bold">1:16</span>
+          <span id="current-time-box" className="text-3xl font-bold">
+            00:00
+          </span>
         </div>
       </div>
     </>

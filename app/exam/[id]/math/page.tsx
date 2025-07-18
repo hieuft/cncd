@@ -14,5 +14,9 @@ export default function Math() {
     setData(data.math);
   }, []);
 
-  return data ? <MathView rawProblemSet={data} /> : <>Not found</>;
+  return data ? (
+    <MathView rawProblemSet={data} timeLimit={3600} />
+  ) : (
+    <>Not found</>
+  );
 }

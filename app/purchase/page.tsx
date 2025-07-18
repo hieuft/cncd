@@ -17,13 +17,14 @@ import {
   Link,
 } from "@heroui/react";
 import { sleep } from "@/utils/sleep";
+import { getCurrentHost } from "@/utils/currentHost";
 
 const PurchasePage = () => {
   async function getData() {
     await sleep(10000);
-    const response = await axios.get(
-      "https://cncd.vercel.app/api/service-package/get",
-    );
+    const host = getCurrentHost();
+
+    const response = await axios.get(host + "/api/service-package/get");
     setPackages(response.data.servicePackageData);
     setLoading(false);
   }

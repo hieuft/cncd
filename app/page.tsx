@@ -42,7 +42,7 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <Snippet hideCopyButton hideSymbol variant="bordered">
           <span>
             Thi thử miễn phí bằng mã{" "}
@@ -51,7 +51,7 @@ export default function Home() {
             </Code>
           </span>
         </Snippet>
-      </div>
+      </div> */}
     </section>
   );
 }

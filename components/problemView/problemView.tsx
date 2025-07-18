@@ -137,7 +137,10 @@ export default function ProblemView({
         >
           <Bookmark />
         </Button>
-        <div id={"user-answer" + problemIndex.toString()}></div>
+        <div
+          id={"user-answer" + problemIndex.toString()}
+          className="hidden"
+        ></div>
       </div>
     </>
   );

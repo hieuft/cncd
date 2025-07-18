@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Panel from "./Panel";
 import Point from "./Point";
 import axios from "axios";
+import { getCurrentHost } from "@/utils/currentHost";
 
 export default async function ExamIdPage({
   params,
@@ -18,8 +19,10 @@ export default async function ExamIdPage({
 
   if (!math) {
     try {
+      const host = getCurrentHost();
+
       const response = await axios.get(
-        "https://cncd.vercel.app/api/problem-set/get/" + id + "/" + email + "/",
+        host + "/api/problem-set/get/" + id + "/" + email + "/",
       );
 
       rawData = response.data.rawData;

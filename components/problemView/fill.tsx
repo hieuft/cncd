@@ -108,61 +108,71 @@ export default function Fill({
       return true;
     }
 
-    if (!showAnswer) {
-      initUserAnswer();
-      for (let i = 0; ; ++i) {
-        if (!listenFillEvent(i)) break;
-      }
-    } else {
-      if (answer && usrAnswer) {
-        const x = answer.split("|");
-        for (let i = 0; i < x.length; ++i) {
-          const box = document.getElementById(
-            "fillbox-ans" + problemIndex.toString() + i.toString(),
-          );
-          if (box) {
-            box.disabled = true;
-            box.value = x[i].split("[]").join(" / ");
-          }
+    if (typeof window != undefined) {
+      if (!showAnswer) {
+        initUserAnswer();
+        for (let i = 0; ; ++i) {
+          if (!listenFillEvent(i)) break;
         }
-
-        const y = usrAnswer.split("|");
-        for (let i = 0; i < y.length; ++i) {
-          const box = document.getElementById(
-            "fillbox-usr" + problemIndex.toString() + i.toString(),
-          );
-          if (box) {
-            box.disabled = true;
-            if (x[i].split("[]").includes(y[i])) {
-              box.classList.add("text-green-500");
-            } else {
-              box.classList.add("text-red-500");
-            }
-            box.value = y[i];
-          }
-        }
-
-        const statusNode = document.getElementById(
-          "status-node" + problemIndex.toString(),
-        );
-        if (statusNode) {
+      } else {
+        if (answer && usrAnswer) {
           const x = answer.split("|");
-          const y = usrAnswer.split("|");
-          let ok = true;
-
           for (let i = 0; i < x.length; ++i) {
-            if (!x[i].split("[]").includes(y[i])) {
-              ok = false;
-              break;
+            const box = document.getElementById(
+              "fillbox-ans" + problemIndex.toString() + i.toString(),
+            );
+            if (box) {
+              box.disabled = true;
+              box.value = x[i].split("[]").join(" / ");
             }
           }
 
-          if (ok) {
-            statusNode.classList.remove("bg-gray-200", "text-black");
-            statusNode.classList.add("bg-green-500", "text-white");
-          } else {
-            statusNode.classList.remove("bg-gray-200", "text-black");
-            statusNode.classList.add("bg-red-500", "text-black");
+          const y = usrAnswer.split("|");
+          for (let i = 0; i < y.length; ++i) {
+            const box = document.getElementById(
+              "fillbox-usr" + problemIndex.toString() + i.toString(),
+            );
+            if (box) {
+              box.disabled = true;
+              if (x[i].split("[]").includes(y[i])) {
+                box.classList.add("text-green-500");
+              } else {
+                box.classList.add("text-red-500");
+              }
+              box.value = y[i];
+            }
+          }
+
+          const statusNode = document.getElementById(
+            "status-node" + problemIndex.toString(),
+          );
+          if (statusNode) {
+            const x = answer.split("|");
+            const y = usrAnswer.split("|");
+            let ok = true;
+
+            for (let i = 0; i < x.length; ++i) {
+              if (!x[i].split("[]").includes(y[i])) {
+                ok = false;
+                break;
+              }
+            }
+
+            if (ok) {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-red-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-green-500", "text-white");
+            } else {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-green-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-red-500", "text-black");
+            }
           }
         }
       }
