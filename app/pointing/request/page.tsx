@@ -39,7 +39,7 @@ export default function HistoryPage() {
 
       setHistory(response.data.pointingRequestData.reverse());
       addToast({
-        title: "Xử lý thành công",
+        title: "Lấy thông tin thành công",
         color: "success",
       });
     } catch (err) {

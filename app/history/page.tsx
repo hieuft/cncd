@@ -61,6 +61,32 @@ export default function HistoryPage() {
     }
   };
 
+  const handleClear = async () => {
+    try {
+      const response = await axios.get("/api/history/clear/" + password);
+
+      setHistory(response.data.historyData.reverse());
+
+      addToast({
+        title: "Xóa thành công",
+        color: "success",
+      });
+    } catch (err) {
+      // console.log(err);
+      if (err.status == 501) {
+        addToast({
+          title: "Không thể xác thực",
+          color: "danger",
+        });
+      } else {
+        addToast({
+          title: "Xóa thất bại",
+          color: "danger",
+        });
+      }
+    }
+  };
+
   const BottomContent = () => {
     return (
       <div className="flex w-full justify-center">
@@ -117,6 +143,15 @@ export default function HistoryPage() {
           ))}
         </TableBody>
       </Table>
+
+      <Button
+        variant="shadow"
+        color="danger"
+        onPress={handleClear}
+        className="mt-4"
+      >
+        Xóa lịch sử
+      </Button>
     </div>
   );
 }

@@ -33,7 +33,7 @@ export async function POST(request: any) {
     const year = date.getFullYear();
 
     const newHistory = new History({
-      type: "add problem set",
+      type: "update problem set",
       body: name + " update " + id,
       time: hour + ":" + minute + " - " + day + "/" + month + "/" + year,
     });
