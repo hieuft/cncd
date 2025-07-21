@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import ProblemSet from "@/models/ProblemSet";
+import ProblemSetIdList from "@/models/ProblemSetIdList";
 import History from "@/models/History";
 import { NextResponse } from "next/server";
 import { checkKey } from "@/config/key";
@@ -12,6 +13,18 @@ export async function POST(request: any) {
 
     const name = checkKey(password);
     if (!name.length) return NextResponse.json({}, { status: 501 });
+
+    const tmp = await ProblemSetIdList.find({});
+    let currentProblemSetIdList = [];
+    if (tmp.length)
+      currentProblemSetIdList = tmp[0].list.filter((item: string) => {
+        return item != id;
+      });
+
+    await ProblemSetIdList.findOneAndUpdate(
+      {},
+      { list: currentProblemSetIdList },
+    );
 
     await ProblemSet.findOneAndDelete({ id: id });
 
