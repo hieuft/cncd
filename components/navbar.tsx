@@ -68,7 +68,7 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">CNCD</p>
           </NextLink>
         </NavbarBrand>
-        <ul className="hidden lg:flex gap-4 justify-start ml-2">
+        <ul className="hidden sm:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <NextLink
@@ -91,7 +91,7 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2"></NavbarItem>
-        <NavbarItem className="hidden md:flex">
+        <NavbarItem className="hidden sm:flex">
           <Button
             as={Link}
             className="text-sm font-bold text-default-600 bg-default-100"

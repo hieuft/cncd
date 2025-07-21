@@ -172,7 +172,7 @@ export default function Point({ id }: { id: string }) {
 
   return (
     <>
-      <div className="h-full w-full flex flex-col items-center justify-center">
+      <div className="h-full w-full flex flex-col items-center justify-center overflow-auto">
         <div className="flex flex-col items-center justify-center">
           <PointView
             math={mathPoint}

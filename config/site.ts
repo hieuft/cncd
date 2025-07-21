@@ -19,6 +19,10 @@ export const siteConfig = {
       href: "/purchase",
     },
     {
+      label: "Tích điểm",
+      href: "/pointing",
+    },
+    {
       label: "Vào thi",
       href: "/exam",
     },

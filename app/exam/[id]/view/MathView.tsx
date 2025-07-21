@@ -247,7 +247,7 @@ export default function MathView({
         </div>
 
         <div className="col-span-1 p-4 flex flex-col">
-          <div>
+          <div className="overflow-auto">
             <div className="text-lg font-bold">Thông tin</div>
             <div className="flex items-center gap-4 my-4">Tư duy Toán học</div>
             <div className="flex items-center gap-3 my-4">

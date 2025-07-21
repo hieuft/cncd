@@ -378,7 +378,7 @@ export default function ScientificView({
         <div className="relative col-span-1">
           <div
             id="drawer-content"
-            className="absolute w-full h-full p-4 flex flex-col bg-white"
+            className="absolute w-full h-full p-4 flex flex-col bg-white overflow-auto"
           >
             <div className="mb-4 text-right">
               <Button
