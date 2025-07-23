@@ -29,7 +29,7 @@ export default function DragDrop({
 }) {
   useEffect(() => {
     function initUserAnswer() {
-      const regex = new RegExp("___", "g");
+      const regex = new RegExp("%%%", "g");
       const matches = statement.match(regex) || [];
       const arr = Array(matches.length);
 
@@ -267,7 +267,7 @@ export default function DragDrop({
   function formatTopic(topic: string, padding: string) {
     let numberOfPlaceholder = 0;
     for (let i = 0; i + 2 < topic.length; ++i) {
-      if (topic[i] + topic[i + 1] + topic[i + 2] == "___") {
+      if (topic[i] + topic[i + 1] + topic[i + 2] == "%%%") {
         topic = `${topic.slice(0, i)} ${renderToString(<Dropbox idName={"dropbox" + padding + problemIndex.toString() + numberOfPlaceholder.toString()} index={numberOfPlaceholder} />)} ${topic.slice(i + 3)}`;
         numberOfPlaceholder++;
       }
