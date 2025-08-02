@@ -1,5 +1,11 @@
 "use client";
 
+import Markdown from "react-markdown";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
+import rehypeRaw from "rehype-raw";
+import "katex/dist/katex.min.css";
+
 import { Button, Tooltip } from "@heroui/react";
 
 import { ChevronLeft, ChevronRight, CircleX } from "lucide-react";
@@ -161,7 +167,7 @@ export default function ScientificView({
             setTimeout(function () {
               window.location.href =
                 "/exam/" + id + "?math=done&reading=done&scientific=done";
-            }, 4000);
+            }, 2000);
           }
         });
       }
@@ -233,7 +239,12 @@ export default function ScientificView({
           >
             <div className="grid grid-cols-2 h-full pb-20">
               <div className="col-span-1 p-8 overflow-y-auto h-full">
-                {item.body}
+                <Markdown
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex, rehypeRaw]}
+                >
+                  {item.body}
+                </Markdown>
               </div>
 
               <div className="flex flex-col col-span-1 p-4 pb-20 overflow-y-auto h-full">

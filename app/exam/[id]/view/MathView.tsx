@@ -144,7 +144,7 @@ export default function MathView({
 
       setTimeout(function () {
         window.location.href = "/exam/" + id + "?math=done";
-      }, 4000);
+      }, 2000);
     }
 
     function listenSubmitButton() {
@@ -196,7 +196,7 @@ export default function MathView({
             }
           }
         }
-      }, 1000);
+      }, 2000);
     }
 
     if (typeof window !== "undefined" && rawProblemSet.length) {

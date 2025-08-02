@@ -5,6 +5,7 @@ import rehypeRaw from "rehype-raw";
 import "katex/dist/katex.min.css";
 import { useEffect } from "react";
 import { cn, user } from "@heroui/theme";
+import { containsAnyExcept } from "@/utils/stringRegex";
 
 export default function ChooseMultiple({
   problemIndex,
@@ -98,7 +99,7 @@ export default function ChooseMultiple({
           });
         }
       } else {
-        if (answer && usrAnswer) {
+        if (answer != undefined && usrAnswer != undefined) {
           const statusNode = document.getElementById(
             "status-node" + problemIndex.toString(),
           );
@@ -110,7 +111,7 @@ export default function ChooseMultiple({
                 "text-black",
               );
               statusNode.classList.add("bg-green-500", "text-white");
-            } else {
+            } else if (containsAnyExcept(usrAnswer, "0")) {
               statusNode.classList.remove(
                 "bg-gray-200",
                 "bg-green-500",
@@ -157,7 +158,9 @@ export default function ChooseMultiple({
     return (
       <>
         <div>
-          <span>Câu trả lời của bạn:</span>
+          <span className="font-bold text-lg text-blue-500 underline">
+            Câu trả lời của bạn:
+          </span>
           {optionsList.map((item) => (
             <label
               key={item.key}
@@ -190,7 +193,9 @@ export default function ChooseMultiple({
           ))}
         </div>
         <div>
-          <span>Đáp án:</span>
+          <span className="font-bold text-lg text-green-500 underline">
+            Đáp án:
+          </span>
           {optionsList.map((item) => (
             <label
               key={item.key}

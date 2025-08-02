@@ -33,7 +33,7 @@ export default function PointingPage() {
               setLog("Hãy nhập email hợp lệ");
             } else {
               try {
-                await sleep(5000);
+                await sleep(2000);
                 const response = await axios.get("/api/point/get/" + email);
 
                 setLog("Bạn đang có " + response.data.point + " điểm");
@@ -59,7 +59,7 @@ export default function PointingPage() {
               setLog("Hãy nhập email hợp lệ");
             } else {
               try {
-                await sleep(5000);
+                await sleep(2000);
                 const response = await axios.post("/api/point/request", {
                   email,
                 });

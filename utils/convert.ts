@@ -16,4 +16,8 @@ function arrayWithKeyToArray(oldArr: Array<any>) {
   return newArr;
 }
 
-export { arrayToArrayWithKey, arrayWithKeyToArray };
+function trim(x: string) {
+  return x.replace(/\s+/g, " ").trim();
+}
+
+export { trim, arrayToArrayWithKey, arrayWithKeyToArray };

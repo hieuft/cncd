@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { Fillbox } from "@/components/fillbox";
 
 import { renderToString } from "react-dom/server";
+import { containsAnyExcept, isAccept } from "@/utils/stringRegex";
+import { trim } from "@/utils/convert";
 
 export default function Fill({
   problemIndex,
@@ -115,7 +117,7 @@ export default function Fill({
           if (!listenFillEvent(i)) break;
         }
       } else {
-        if (answer && usrAnswer) {
+        if (answer != undefined && usrAnswer != undefined) {
           const x = answer.split("|");
           for (let i = 0; i < x.length; ++i) {
             const box = document.getElementById(
@@ -123,55 +125,57 @@ export default function Fill({
             );
             if (box) {
               box.disabled = true;
-              box.value = x[i].split("[]").join(" / ");
+              box.value = x[i].split("[]").join(" | ");
             }
           }
 
-          const y = usrAnswer.split("|");
-          for (let i = 0; i < y.length; ++i) {
-            const box = document.getElementById(
-              "fillbox-usr" + problemIndex.toString() + i.toString(),
-            );
-            if (box) {
-              box.disabled = true;
-              if (x[i].split("[]").includes(y[i])) {
-                box.classList.add("text-green-500");
-              } else {
-                box.classList.add("text-red-500");
-              }
-              box.value = y[i];
-            }
-          }
-
-          const statusNode = document.getElementById(
-            "status-node" + problemIndex.toString(),
-          );
-          if (statusNode) {
-            const x = answer.split("|");
+          if (containsAnyExcept(usrAnswer, "|")) {
             const y = usrAnswer.split("|");
-            let ok = true;
-
-            for (let i = 0; i < x.length; ++i) {
-              if (!x[i].split("[]").includes(y[i])) {
-                ok = false;
-                break;
+            for (let i = 0; i < y.length; ++i) {
+              const box = document.getElementById(
+                "fillbox-usr" + problemIndex.toString() + i.toString(),
+              );
+              if (box) {
+                box.disabled = true;
+                if (isAccept(x[i], y[i])) {
+                  box.classList.add("text-green-500");
+                } else {
+                  box.classList.add("text-red-500");
+                }
+                box.value = y[i];
               }
             }
 
-            if (ok) {
-              statusNode.classList.remove(
-                "bg-gray-200",
-                "bg-red-500",
-                "text-black",
-              );
-              statusNode.classList.add("bg-green-500", "text-white");
-            } else {
-              statusNode.classList.remove(
-                "bg-gray-200",
-                "bg-green-500",
-                "text-black",
-              );
-              statusNode.classList.add("bg-red-500", "text-black");
+            const statusNode = document.getElementById(
+              "status-node" + problemIndex.toString(),
+            );
+            if (statusNode) {
+              const x = answer.split("|");
+              const y = usrAnswer.split("|");
+              let ok = true;
+
+              for (let i = 0; i < x.length; ++i) {
+                if (!isAccept(x[i], y[i])) {
+                  ok = false;
+                  break;
+                }
+              }
+
+              if (ok) {
+                statusNode.classList.remove(
+                  "bg-gray-200",
+                  "bg-red-500",
+                  "text-black",
+                );
+                statusNode.classList.add("bg-green-500", "text-white");
+              } else {
+                statusNode.classList.remove(
+                  "bg-gray-200",
+                  "bg-green-500",
+                  "text-black",
+                );
+                statusNode.classList.add("bg-red-500", "text-black");
+              }
             }
           }
         }
@@ -210,7 +214,9 @@ export default function Fill({
       <div className="flex text-lg flex-1 flex-col">
         <div className="mb-4">
           <div>
-            <span>Câu trả lời của bạn:</span>
+            <span className="font-bold text-lg text-blue-500 underline">
+              Câu trả lời của bạn:
+            </span>
             <Markdown
               remarkPlugins={[remarkMath]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -220,7 +226,9 @@ export default function Fill({
           </div>
           <br />
           <div>
-            <span>Đáp án:</span>
+            <span className="font-bold text-lg text-green-500 underline">
+              Đáp án:
+            </span>
             <Markdown
               remarkPlugins={[remarkMath]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}

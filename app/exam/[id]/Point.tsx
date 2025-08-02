@@ -1,6 +1,8 @@
 "use client";
 
 import PointView from "@/components/pointView";
+import { trim } from "@/utils/convert";
+import { isAccept } from "@/utils/stringRegex";
 import { Button } from "@heroui/button";
 import { useEffect, useState } from "react";
 
@@ -25,7 +27,10 @@ export default function Point({ id }: { id: string }) {
 
       let ret = 0;
       for (let i = 0, n = mathAnswer.length; i < n; ++i) {
-        if (userMathAnswer[i] == mathAnswer[i]) {
+        if (
+          trim(userMathAnswer[i].toLowerCase()) ==
+          trim(mathAnswer[i].toLowerCase())
+        ) {
           ++ret;
         }
       }
@@ -34,20 +39,6 @@ export default function Point({ id }: { id: string }) {
     }
 
     function getReadingPoint() {
-      function isAccept(ans: string, user: string) {
-        if (ans.includes("[]")) {
-          const x = ans.split("[]");
-          if (x.includes(user)) {
-            return true;
-          }
-        } else {
-          if (ans == user) {
-            return true;
-          }
-        }
-        return false;
-      }
-
       const userReadingAnswer =
         sessionStorage.getItem("userReadingAnswer")?.split("[divider]") || [];
 
@@ -89,21 +80,6 @@ export default function Point({ id }: { id: string }) {
     }
 
     function getScientificPoint() {
-      function isAccept(ans: string, user: string) {
-        // console.log(ans, user);
-        if (ans.includes("[]")) {
-          const x = ans.split("[]");
-          if (x.includes(user)) {
-            return true;
-          }
-        } else {
-          if (ans == user) {
-            return true;
-          }
-        }
-        return false;
-      }
-
       const userScientificAnswer =
         sessionStorage.getItem("userScientificAnswer")?.split("[divider]") ||
         [];

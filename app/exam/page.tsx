@@ -89,7 +89,7 @@ export default function ExamPage() {
                     } else {
                       redirect("/exam/" + value);
                     }
-                  }, 7000);
+                  }, 2000);
                 } else {
                   setLoading(false);
                 }

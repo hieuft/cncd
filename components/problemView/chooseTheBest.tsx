@@ -72,24 +72,26 @@ export default function ChooseTheBest({
           });
         }
       } else {
-        const statusNode = document.getElementById(
-          "status-node" + problemIndex.toString(),
-        );
-        if (statusNode) {
-          if (answer == usrAnswer) {
-            statusNode.classList.remove(
-              "bg-gray-200",
-              "bg-red-500",
-              "text-black",
-            );
-            statusNode.classList.add("bg-green-500", "text-white");
-          } else {
-            statusNode.classList.remove(
-              "bg-gray-200",
-              "bg-green-500",
-              "text-black",
-            );
-            statusNode.classList.add("bg-red-500", "text-black");
+        if (answer != undefined && usrAnswer != undefined) {
+          const statusNode = document.getElementById(
+            "status-node" + problemIndex.toString(),
+          );
+          if (statusNode) {
+            if (answer == usrAnswer) {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-red-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-green-500", "text-white");
+            } else if (usrAnswer.length) {
+              statusNode.classList.remove(
+                "bg-gray-200",
+                "bg-green-500",
+                "text-black",
+              );
+              statusNode.classList.add("bg-red-500", "text-black");
+            }
           }
         }
       }
@@ -129,7 +131,9 @@ export default function ChooseTheBest({
     return (
       <>
         <div>
-          <span>Câu trả lời của bạn:</span>
+          <span className="font-bold text-lg text-blue-500 underline">
+            Câu trả lời của bạn:
+          </span>
           {optionsList.map((item) => (
             <label
               key={item.key}
@@ -162,7 +166,9 @@ export default function ChooseTheBest({
           ))}
         </div>
         <div>
-          <span>Đáp án:</span>
+          <span className="font-bold text-lg text-green-500 underline">
+            Đáp án:
+          </span>
           {optionsList.map((item) => (
             <label
               key={item.key}

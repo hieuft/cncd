@@ -11,6 +11,7 @@ import { Dropbox } from "@/components/dropbox";
 
 import { renderToString } from "react-dom/server";
 import { normalize } from "node:path/posix";
+import { containsAnyExcept, isAccept } from "@/utils/stringRegex";
 
 export default function DragDrop({
   problemIndex,
@@ -206,7 +207,7 @@ export default function DragDrop({
           if (!listenDropToBoxEvent(i)) break;
         }
       } else {
-        if (answer && usrAnswer) {
+        if (answer != undefined && usrAnswer != undefined) {
           const x = answer.split("|");
           for (let i = 0; i < x.length; ++i) {
             const opt = document.getElementById(
@@ -221,42 +222,44 @@ export default function DragDrop({
             }
           }
 
-          const y = usrAnswer.split("|");
-          for (let i = 0; i < y.length; ++i) {
-            const opt = document.getElementById(
-              "opt-usr" + problemIndex.toString() + y[i],
-            );
-            const box = document.getElementById(
-              "dropbox-usr" + problemIndex.toString() + i.toString(),
-            );
-            if (opt && box) {
-              if (x[i] == y[i]) {
-                opt.classList.add("!bg-green-50");
-              } else {
-                opt.classList.add("!bg-red-50");
+          if (containsAnyExcept(usrAnswer, "|")) {
+            const y = usrAnswer.split("|");
+            for (let i = 0; i < y.length; ++i) {
+              const opt = document.getElementById(
+                "opt-usr" + problemIndex.toString() + y[i],
+              );
+              const box = document.getElementById(
+                "dropbox-usr" + problemIndex.toString() + i.toString(),
+              );
+              if (opt && box) {
+                if (isAccept(x[i], y[i])) {
+                  opt.classList.add("!bg-green-50");
+                } else {
+                  opt.classList.add("!bg-red-50");
+                }
+                box.appendChild(opt);
               }
-              box.appendChild(opt);
             }
-          }
 
-          const statusNode = document.getElementById(
-            "status-node" + problemIndex.toString(),
-          );
-          if (statusNode) {
-            if (answer == usrAnswer) {
-              statusNode.classList.remove(
-                "bg-gray-200",
-                "bg-red-500",
-                "text-black",
-              );
-              statusNode.classList.add("bg-green-500", "text-white");
-            } else {
-              statusNode.classList.remove(
-                "bg-gray-200",
-                "bg-green-500",
-                "text-black",
-              );
-              statusNode.classList.add("bg-red-500", "text-black");
+            const statusNode = document.getElementById(
+              "status-node" + problemIndex.toString(),
+            );
+            if (statusNode) {
+              if (isAccept(answer, usrAnswer)) {
+                statusNode.classList.remove(
+                  "bg-gray-200",
+                  "bg-red-500",
+                  "text-black",
+                );
+                statusNode.classList.add("bg-green-500", "text-white");
+              } else {
+                statusNode.classList.remove(
+                  "bg-gray-200",
+                  "bg-green-500",
+                  "text-black",
+                );
+                statusNode.classList.add("bg-red-500", "text-black");
+              }
             }
           }
         }
@@ -281,7 +284,7 @@ export default function DragDrop({
         <div
           id={"dropbox" + padding + problemIndex.toString()}
           data-index="-1"
-          className="flex gap-4 p-4 rounded-lg border-2 border-gray-200 min-h-20"
+          className="flex gap-4 p-4 rounded-lg border-2 border-gray-200 min-h-20 flex-wrap"
         >
           {optionsList.map((item) => (
             <div
@@ -291,7 +294,7 @@ export default function DragDrop({
               key={item.key}
               data-index={item.key}
               className={
-                "inline-block min-w-24 min-h-12 content-center text-center cursor-pointer select-none bg-gray-100 rounded-xl"
+                "inline-block min-w-24 min-h-12 content-center text-center cursor-pointer select-none bg-gray-100 rounded-xl px-4"
               }
               draggable={!showAnswer}
             >
@@ -343,7 +346,9 @@ export default function DragDrop({
       <div className="flex text-lg flex-1 flex-col-reverse">
         <div className="mb-4">
           <div>
-            <span>Câu trả của bạn:</span>
+            <span className="font-bold text-lg text-blue-500 underline">
+              Câu trả của bạn:
+            </span>
             <Markdown
               remarkPlugins={[remarkMath]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}
@@ -353,7 +358,9 @@ export default function DragDrop({
           </div>
           <br />
           <div>
-            <span>Đáp án:</span>
+            <span className="font-bold text-lg text-green-500 underline">
+              Đáp án:
+            </span>
             <Markdown
               remarkPlugins={[remarkMath]}
               rehypePlugins={[rehypeKatex, rehypeRaw]}

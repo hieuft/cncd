@@ -121,7 +121,7 @@ export default function MathView({
             setTimeout(function () {
               window.location.href =
                 "/exam/" + id + "?math=done&reading=done&scientific=done";
-            }, 4000);
+            }, 2000);
           }
         });
       }

@@ -21,7 +21,7 @@ import { getCurrentHost } from "@/utils/currentHost";
 
 const PurchasePage = () => {
   async function getData() {
-    await sleep(10000);
+    await sleep(2000);
     const host = getCurrentHost();
 
     const response = await axios.get(host + "/api/service-package/get");
